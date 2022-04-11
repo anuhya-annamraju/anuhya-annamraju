@@ -1,0 +1,18 @@
+OOP concepts
+
+Encapsulation
+Abstraction
+Inheritance
+Polymorphism
+
+Method overloading
+Method overriding
+
+Commenting and Documentation in C#
+Clean Code Principles in C#
+
+
+Example to demonstrate:
+
+
+
