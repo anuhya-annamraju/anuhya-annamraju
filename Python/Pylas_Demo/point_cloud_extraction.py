@@ -12,7 +12,6 @@ For more information please refer to the text file in the parent folder of this 
 
 @author: Anuhya Annamraju
 
-Copyright (C): AirRobot GmbH & Co. KG. All Rights Reserved.
 """
 
 
@@ -22,29 +21,41 @@ from random import randint
 import plotly.graph_objects as go
 import numpy as np
 
+# Choose Browser as the 3D Plot renderer
 pio.renderers.default='browser'
 
-with pylas.open('NEON_D06_KONZ_DP1_704000_4324000_classified_point_cloud_colorized.laz') as fh : 
+with pylas.open('NEON_D06_KONZ_DP1_704000_4324000_classified_point_cloud_colorized.laz') as data : 
     
-    print('Points from Header:', fh.header.point_count)
-    las = fh.read()
-    print(las)
-    print('Points from data:', len(las.points))
-
-    l = len(las.points)
+    #Extracted data contains
+    # 1.Header
+    # 2. VLR - Variable Length Record
+    # 3. Point Records - Point cloud data
+    
+    # Method Read() returns point cloud data
+    las = data.read()
+    l = las.points.size
+    point_cloud_data = las.points
     index = 0
     data_x = []
     data_y = []
     data_z = []
     intensities =[]
     downsampling_factor = 25
+    downsampled_len = int(l/downsampling_factor)
     
-    while index < int(l/downsampling_factor):
+    
+    #Reducing the sample size of the data for visualization
+    while index < downsampled_len:
         
-        data_x.append(las.points.item(index*downsampling_factor)[0])
-        data_y.append(las.points.item(index*downsampling_factor)[1])
-        data_z.append(las.points.item(index*downsampling_factor)[2])
-        intensities.append(las.points.item(index*downsampling_factor)[3])
+        row = point_cloud_data[index*downsampling_factor]
+        
+        #row contains 13 values in the following order
+        # [X', 'Y', 'Z', 'intensity', 'bit_fields', 'raw_classification', 'scan_angle_rank', 'user_data', 'point_source_id', 'gps_time', 'red', 'green', 'blue']
+        
+        data_x.append(row[0])
+        data_y.append(row[1])
+        data_z.append(row[2])
+        intensities.append(row[3])
         index +=1 
                 
     
@@ -52,12 +63,13 @@ with pylas.open('NEON_D06_KONZ_DP1_704000_4324000_classified_point_cloud_coloriz
     
     intensities_pc = np.ones(len(intensities))
     
+    # If intensity of the recorded points is zero, create a new array of colors to visulaize data
     if max_intensity != 0:
         intensities_pc = [(max_intensity-i)/max_intensity for i in intensities]
     else:
         intensities_pc = [('#%06X' % randint(0, 0xFF0F00)) for i in intensities]
     
-    
+    #Visualize the point cloud in 3D plot
     fig = go.Figure(data=go.Scatter3d(
         x = data_x,
         y = data_y,
