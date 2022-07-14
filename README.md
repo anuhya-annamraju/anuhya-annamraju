@@ -1,7 +1,7 @@
 - 👋 Hi, I’m @anuhya-annamraju
 - 👀 I’m interested in solving problems using software
 - 🌱 I’m currently learning path planning algorithms for autonomous navigation
-- ✍️ I like coding in C, C#, Java, Python, Matlab
+- ✍️ I like coding in C++, Python, Matlab and C#
 - 📫 How to reach me : anuhyaja@gmail.com
 
 <!---
