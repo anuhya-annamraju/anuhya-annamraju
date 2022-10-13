@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 
@@ -37,8 +36,8 @@ public class Executer
     public static void Main(string[] args)
     {
         List<int> arr = new List<int> { 9, -3, 5, 2, 6, 8, -6, 1, 3 };
-        Sorter h = new Sorter();
-        List<int> sorted = h.QuickSort(arr);
+        Sorter sorter = new Sorter();
+        List<int> sorted = sorter.QuickSort(arr);
 
         foreach (var v in sorted)
         {
